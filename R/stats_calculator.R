@@ -56,39 +56,43 @@ get_binom_prob <- function(hit,strength,toughness,armor){
 ui <- fluidPage(
       theme = shinytheme("darkly"),
       titlePanel("DamageTesting"),
-      sidebarPanel(
-               
-               # Copy the line below to make a slider bar 
-               sliderInput("NumberHits", label = h3("Number of hits"), min = 1, 
-                           max = 60, value = 10),
-      
-                 # Copy the line below to make a slider bar 
-                 sliderInput("WS", label = h3("Ballistic or weapon skill "), min = 1, 
-                             max = 6, value = 3),
+      fluidRow(
+        column(4,
+               "Main Characteristics",
+               fluidRow(
+                 column(6,
+                        "DamageDealer",
+                        # Copy the line below to make a slider bar
+                        sliderInput("NumberHits", label = h3("Number of hits"), min = 1,
+                                    max = 60, value = 10),
+
+                        # Copy the line below to make a slider bar
+                        sliderInput("WS", label = h3("Ballistic or weapon skill "), min = 1,
+                                    max = 6, value = 3),
 
 
-               # Copy the line below to make a slider range 
-               sliderInput("Strength", label = h3("Strength"), min = 1, 
-                           max = 12 , value = 4),
+                        # Copy the line below to make a slider range
+                        sliderInput("Strength", label = h3("Strength"), min = 1,
+                                    max = 12 , value = 4)),
+                 column(6,
+                        "OppositionDefense",
+                        # Copy the line below to make a slider range
+                        sliderInput("TargetToughness", label = h3("TargetToughness"), min = 1,
+                                    max = 12, value = 4),
 
-               # Copy the line below to make a slider range 
-               sliderInput("TargetToughness", label = h3("TargetToughness"), min = 1, 
-                           max = 12, value = 4),
+                        # Copy the line below to make a slider range
+                        sliderInput("TargetSave", label = h3("TargetSave"), min = 1,
+                                    max = 6, value = 3),
+                        checkboxInput("noArmor", "No Armor Save", value = FALSE))
+               )
 
-               # Copy the line below to make a slider range 
-               sliderInput("TargetSave", label = h3("TargetSave"), min = 1, 
-                           max = 6, value = 3),
-               checkboxInput("noArmor", "No Armor Save", value = FALSE)
-      ),
-      
+        ),
+        column(10,
+               "main",
+               plotOutput(outputId = "probDens")
 
-      mainPanel(
-        
-        # Output: Histogram ----
-        plotOutput(outputId = "probDens")
-        
+        )
       )
-      
     )
 
 # Define server logic required to draw a histogram
@@ -106,9 +110,9 @@ server <- function(input, output) {
         pp = get_binom_prob(input$WS,input$Strength,input$TargetToughness,armor)
         # draw the histogram with the specified number of bins
         plot(seq(1,hits),dbinom(seq(1,hits),hits,prob=pp),type='h')
-        
+
     })
 }
 
-# Run the application 
+# Run the application
 shinyApp(ui = ui, server = server)
