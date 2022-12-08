@@ -43,6 +43,26 @@ get_binom_prob <- function(hit,strength,toughness,armor){
   prob = prob * ((armor-1)/6)
   return(prob)
 }
+
+get_prob_hit <- function(hit){
+  prob = 1-(hit-1)/6
+  return(prob)
+}
+
+get_prob_wound <- function(strength,toughness){
+  prob = 1-((get_strength_toughness_prob(strength,toughness)-1)/6)
+  return(prob)
+}
+
+get_prob_save <- function(armorsave){
+  prob = (armorsave-1)/6
+  return(prob)
+}
+
+get_kill_count <- function(nbwounds, damage, lifepoints){
+  bodycount = nbwounds/(ceiling(lifepoints/damage))
+  return(floor(bodycount))
+}
 #hit = 4
 #wound = 4
 #armor = 4
@@ -73,6 +93,8 @@ ui <- fluidPage(
 
                         # Copy the line below to make a slider range
                         sliderInput("Strength", label = h3("Strength"), min = 1,
+                                    max = 12 , value = 4),
+                        sliderInput("Damage", label = h3("Damage"), min = 1,
                                     max = 12 , value = 4)),
                  column(6,
                         "OppositionDefense",
@@ -83,13 +105,18 @@ ui <- fluidPage(
                         # Copy the line below to make a slider range
                         sliderInput("TargetSave", label = h3("TargetSave"), min = 1,
                                     max = 6, value = 3),
-                        checkboxInput("noArmor", "No Armor Save", value = FALSE))
+                        checkboxInput("noArmor", "No Armor Save", value = FALSE),
+                        sliderInput("TargetLifePoint", label = h3("TargetLifePoints"), min = 1,
+                                    max = 10, value = 2))
                )
 
         ),
         column(10,
                "main",
-               plotOutput(outputId = "probDens")
+               tabsetPanel(type = "tabs",
+                           tabPanel("ProbDens",plotOutput(outputId = "probDens")),
+                           tabPanel("Summary", verbatimTextOutput("summary"))
+               )
 
         )
       )
