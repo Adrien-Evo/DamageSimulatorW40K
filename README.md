@@ -7,6 +7,8 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Codecov test
+coverage](https://codecov.io/gh/Adrien-Evo/DamageSimulatorW40K/branch/main/graph/badge.svg)](https://app.codecov.io/gh/Adrien-Evo/DamageSimulatorW40K?branch=main)
 <!-- badges: end -->
 
 ShinyApp to know what to expect when you shoot at things in W40K
@@ -37,3 +39,12 @@ You can install the development version of DamageSimulatorW40K like so:
 ``` r
 # FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
 ```
+
+# TODO
+
+Put all function in an other file Maybe put stat calculator as its own
+shiny module. Like weapon profile as its own UI for example./ I dont
+knoqw Do the graph now for the kill count Get summary stats displayed
+somewhere to have an easy to compare value tlo start implementing global
+testing on the final output Add testing for all small functions to start
+working on adding hit modifier
