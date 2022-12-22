@@ -42,7 +42,14 @@ get_strength_toughness_prob <- function(ST, TO){
   return(prob)
 }
 
-get_binom_prob <- function(hit,strength,toughness,armor){
+get_binom_prob <- function(prob_hit,prob_wound,prob_go_trough_save){
+
+  prob = prob_hit
+  prob = prob * prob_wound
+  prob = prob * prob_go_trough_save
+  return(prob)
+}
+get_binom_prob_old <- function(hit,strength,toughness,armor){
 
   prob = 1-(hit-1)/6
   prob = prob * (1-((get_strength_toughness_prob(strength,toughness)-1)/6))
@@ -111,13 +118,13 @@ get_kill_count <- function(nbwounds, damage, lifepoints){
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
-      theme = shinytheme("darkly"),
+      theme = shinytheme("united"),
       titlePanel("DamageTesting"),
       fluidRow(
         column(4,
                "Main Characteristics",
                fluidRow(
-                 column(6,
+                 column(5,
                         "DamageDealer",
                         # Copy the line below to make a slider bar
                         sliderInput("NumberHits", label = h3("Number of hits"), min = 1,
@@ -132,8 +139,16 @@ ui <- fluidPage(
                         sliderInput("Strength", label = h3("Strength"), min = 1,
                                     max = 12 , value = 4),
                         sliderInput("Damage", label = h3("Damage"), min = 1,
-                                    max = 12 , value = 4)),
-                 column(6,
+                                    max = 12 , value = 4)
+                        ),
+                 column(8,
+                        "main",
+                        tabsetPanel(type = "tabs",
+                                    tabPanel("ProbDens",plotOutput(outputId = "probDens")),
+                                    tabPanel("ProbDens_old", plotOutput(outputId ="probDens_old"))
+                                    )
+                        ),
+                 column(5,
                         "OppositionDefense",
                         # Copy the line below to make a slider range
                         sliderInput("TargetToughness", label = h3("TargetToughness"), min = 1,
@@ -144,36 +159,41 @@ ui <- fluidPage(
                                     max = 6, value = 3),
                         checkboxInput("noArmor", "No Armor Save", value = FALSE),
                         sliderInput("TargetLifePoint", label = h3("TargetLifePoints"), min = 1,
-                                    max = 10, value = 2))
+                                    max = 10, value = 2)
+                        )
                )
-
-        ),
-        column(10,
-               "main",
-               tabsetPanel(type = "tabs",
-                           tabPanel("ProbDens",plotOutput(outputId = "probDens")),
-                           tabPanel("Summary", verbatimTextOutput("summary"))
-               )
-
         )
       )
     )
 
 # Define server logic required to draw a histogram
 server <- function(input, output) {
+  ##Lets get the probability to get a damage through
 
     output$probDens <- renderPlot({
         # generate bins based on input$bins from ui.R
         hits <- input$NumberHits
-        ##Hit modifyer
-        if(input$noArmor){
-          armor = 7
-        }else{
-          armor = input$TargetSave
-        }
-        pp = get_binom_prob(input$WS,input$Strength,input$TargetToughness,armor)
+        prob_hit <- get_prob_hit(input$WS)
+        prob_wound <- get_prob_wound(input$Strength,input$TargetToughness)
+        prob_go_through_save <- get_prob_save(input$TargetSave)
+        #Combine all prob using get_prob_save
+        prob_binom <- get_binom_prob(prob_hit,prob_wound,prob_go_through_save)
         # draw the histogram with the specified number of bins
-        plot(seq(1,hits),dbinom(seq(1,hits),hits,prob=pp),type='h')
+        plot(seq(1,hits),dbinom(seq(1,hits),hits,prob=prob_binom),type='h')
+
+    })
+    output$probDens_old <- renderPlot({
+      # generate bins based on input$bins from ui.R
+      hits <- input$NumberHits
+      ##Hit modifyer
+      if(input$noArmor){
+        armor = 7
+      }else{
+        armor = input$TargetSave
+      }
+      pp = get_binom_prob_old(input$WS,input$Strength,input$TargetToughness,armor)
+      # draw the histogram with the specified number of bins
+      plot(seq(1,hits),dbinom(seq(1,hits),hits,prob=pp),type='h')
 
     })
 }
