@@ -107,12 +107,17 @@ get_kill_count <- function(nbwounds, damage, lifepoints){
   return(floor(bodycount))
 }
 
-#hit = 4
-#wound = 4
-#armor = 4
-#toughness = 4
-#pp = get_binom_prob(hit,wound,toughness,armor)
-#pp
-
-#plot(seq(1,40),dbinom(seq(1,40),40,prob=pp),type='h')
+# get_kill_count(40,1,3)
+# #hit = 4
+# #wound = 4
+# #armor = 4
+# #toughness = 4
+# hits <- 4
+# prob_hit <- 4
+# prob_wound <- get_prob_wound(4,4)
+# prob_go_through_save <- get_prob_save(3)
+# #Combine all prob using get_prob_save
+# prob_binom <- get_binom_prob(prob_hit,prob_wound,prob_go_through_save)
+# prob_binom
+# #plot(seq(1,40),dbinom(seq(1,40),40,prob=pp),type='h')
 

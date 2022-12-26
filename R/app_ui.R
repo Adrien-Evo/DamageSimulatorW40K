@@ -20,43 +20,49 @@ app_ui <- function(request) {
       theme = shinytheme("united"),
       titlePanel("DamageTesting"),
       fluidRow(
-        column(5,
-               "DamageDealer",
+        column(3,
                # Copy the line below to make a slider bar
                sliderInput("NumberHits", label = h3("Number of hits"), min = 1,
-                           max = 60, value = 10),
-
+                           max = 60, value = 10)
+        ),
+        column(3,
                # Copy the line below to make a slider bar
                sliderInput("WS", label = h3("Ballistic or weapon skill "), min = 1,
-                           max = 6, value = 3),
-
-
+                           max = 6, value = 3)
+        ),
+        column(3,
                # Copy the line below to make a slider range
                sliderInput("Strength", label = h3("Strength"), min = 1,
-                           max = 12 , value = 4),
-               sliderInput("Damage", label = h3("Damage"), min = 1,
                            max = 12 , value = 4)
         ),
-        column(8,
-               "main",
-               tabsetPanel(type = "tabs",
-                           tabPanel("ProbDens",plotOutput(outputId = "probDens")),
-                           tabPanel("ProbDens_old", plotOutput(outputId ="probDens_old"))
-               )
-        ),
-        column(5,
-               "OppositionDefense",
+        column(3,
+               sliderInput("Damage", label = h3("Damage"), min = 1,
+                           max = 12 , value = 4)
+        )
+      ),
+        fluidRow(
+        column(3,
                # Copy the line below to make a slider range
                sliderInput("TargetToughness", label = h3("TargetToughness"), min = 1,
-                           max = 12, value = 4),
-
+                           max = 12, value = 4)
+        ),
+        column(3,
                # Copy the line below to make a slider range
                sliderInput("TargetSave", label = h3("TargetSave"), min = 1,
-                           max = 6, value = 3),
+                           max = 6, value = 3)
+        ),
+        column(3,
                checkboxInput("noArmor", "No Armor Save", value = FALSE),
-               sliderInput("TargetLifePoint", label = h3("TargetLifePoints"), min = 1,
+               sliderInput("TargetLifePoints", label = h3("TargetLifePoints"), min = 1,
                            max = 10, value = 2)
         )
+        ),
+      fluidRow(
+                "main",
+                tabsetPanel(type = "tabs",
+                            tabPanel("ProbDens",plotOutput(outputId = "probDens")),
+                            tabPanel("kill_dens", plotOutput(outputId ="kill_dens"))
+                )
       )
     )
   )
