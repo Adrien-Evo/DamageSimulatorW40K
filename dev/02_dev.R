@@ -30,10 +30,10 @@ attachment::att_amend_desc()
 
 ## External resources
 ## Creates .js and .css files at inst/app/www
-golem::add_js_file("script")
-golem::add_js_handler("handlers")
-golem::add_css_file("custom")
-golem::add_sass_file("custom")
+#golem::add_js_file("script")
+#golem::add_js_handler("handlers")
+#golem::add_css_file("custom")
+#golem::add_sass_file("custom")
 
 ## Add internal datasets ----
 ## If you have data in your package
@@ -41,7 +41,7 @@ golem::add_sass_file("custom")
 
 ## Tests ----
 ## Add one line by test you want to create
-usethis::use_test("app")
+usethis::use_test("stats_calculator")
 
 # Documentation
 

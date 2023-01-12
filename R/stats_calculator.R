@@ -41,7 +41,10 @@ get_strength_toughness_prob <- function(ST, TO){
   }
   return(prob)
 }
-
+#' Combine all probabilities to get our prob density
+#'
+#' @param hit Prob to hit, prob to wound and the pro to go through armor
+#' @return combined probability
 get_binom_prob <- function(prob_hit,prob_wound,prob_go_trough_save){
 
   prob = prob_hit

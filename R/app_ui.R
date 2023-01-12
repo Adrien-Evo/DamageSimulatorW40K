@@ -27,7 +27,7 @@ app_ui <- function(request) {
         ),
         column(3,
                # Copy the line below to make a slider bar
-               sliderInput("WS", label = h3("Ballistic or weapon skill "), min = 1,
+               sliderInput("WS", label = h3("WS or BS "), min = 1,
                            max = 6, value = 3)
         ),
         column(3,
@@ -37,7 +37,7 @@ app_ui <- function(request) {
         ),
         column(3,
                sliderInput("Damage", label = h3("Damage"), min = 1,
-                           max = 12 , value = 4)
+                           max = 12 , value = 1)
         )
       ),
         fluidRow(
@@ -49,10 +49,9 @@ app_ui <- function(request) {
         column(3,
                # Copy the line below to make a slider range
                sliderInput("TargetSave", label = h3("TargetSave"), min = 1,
-                           max = 6, value = 3)
+                           max = 7, value = 3)
         ),
         column(3,
-               checkboxInput("noArmor", "No Armor Save", value = FALSE),
                sliderInput("TargetLifePoints", label = h3("TargetLifePoints"), min = 1,
                            max = 10, value = 2)
         )
