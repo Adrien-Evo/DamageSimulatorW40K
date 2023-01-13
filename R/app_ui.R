@@ -62,7 +62,8 @@ app_ui <- function(request) {
                 "main",
                 tabsetPanel(type = "tabs",
                             tabPanel("ProbDens",plotOutput(outputId = "probDens")),
-                            tabPanel("kill_dens", plotOutput(outputId ="kill_dens"))
+                            tabPanel("kill_dens", plotOutput(outputId ="kill_dens")),
+                            tabPanel("cumulativ_probDens", plotOutput(outputId ="cumulativ_probDens"))
                 )
       )
     )

@@ -122,17 +122,33 @@ get_kill_count <- function(nbwounds, damage, lifepoints){
   return(floor(body_count))
 }
 
-get_kill_count(40,1,3)
-#hit = 4
-#wound = 4
-#armor = 4
-#toughness = 4
-hits <- 4
-prob_hit <- 4
+
+#######Testing
+
+hits <- 10
+prob_hit <- get_prob_hit(3)
 prob_wound <- get_prob_wound(4,4)
 prob_go_through_save <- get_prob_save(3)
+
+#Get the initial number of damage using the damage characteristic of the weapon
+nb_wounds <- get_wound_count(hits,1)
+
 #Combine all prob using get_prob_save
 prob_binom <- get_binom_prob(prob_hit,prob_wound,prob_go_through_save)
-prob_binom
-#plot(seq(1,40),dbinom(seq(1,40),40,prob=pp),type='h')
+
+# Get the prob to damage a model
+binom_damage <- dbinom(seq(1,nb_wounds),nb_wounds,prob=prob_binom)
+
+
+# draw the histogram with the specified number of bins
+damage_barplot <- barplot(binom_damage[1:hits],names.arg = seq(1,hits),col="#69b3a2",ylim = c(0,max(binom_damage)+0.05))
+text(damage_barplot, binom_damage[1:hits] + 0.025 , paste(round(binom_damage[1:hits]*100),"%", sep=""),cex=1)
+
+binom_cumulativ = rep(0,length(binom_damage))
+for(i in 1:length(binom_damage)){
+  binom_cumulativ[i] <- sum(binom_damage[i:length(binom_damage)])
+}
+
+cumulativ_damage_barplot <- barplot(binom_cumulativ[1:hits],names.arg = seq(1,hits),col="#69b3a2",ylim = c(0,max(binom_cumulativ)+0.05))
+text(cumulativ_damage_barplot, binom_cumulativ[1:hits] + 0.025 , paste(round(binom_cumulativ[1:hits]*100),"%", sep=""),cex=1)
 
