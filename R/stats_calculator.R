@@ -84,7 +84,7 @@ get_prob_wound <- function(strength,toughness){
   return(prob)
 }
 
-#' Get the probability for a wound to go througth knowing the save of the opponent
+#' Get the probability for a wound to go through knowing the save of the opponent
 #'
 #' @param armorsave Armor save in the datasheet
 #' @return Probability for a wound to go through knowing the target armor save
@@ -95,8 +95,20 @@ get_prob_save <- function(armorsave){
   prob = (armorsave-1)/6
   return(prob)
 }
+#' Get the number of wounds possible using the damages per shot.
+#'
+#' @param nbwounds Total number of wounds dealt after hitting, wounding and armorsaving
+#' @param damage Damage profile of the weapon
+#' @return Number of dead model
+#' @examples
+#' get_prob_save(4)
+#' get_prob_save(2)
+get_wound_count <- function(nbwounds, damage){
+  wound_count = nbwounds*damage
+  return(wound_count)
+}
 
-#' Get the number of dead units knowing how many wounds have been dealt, with how many damage per shots and the target's wound characteristic
+#' Get the number of dead units knowing how many wounds have been dealt, with how many damages per shot and the target's wound characteristic
 #'
 #' @param nbwounds Total number of wounds dealt after hitting, wounding and armorsaving
 #' @param damage Damage profile of the weapon
@@ -106,8 +118,8 @@ get_prob_save <- function(armorsave){
 #' get_prob_save(4)
 #' get_prob_save(2)
 get_kill_count <- function(nbwounds, damage, lifepoints){
-  bodycount = nbwounds/(ceiling(lifepoints/damage))
-  return(floor(bodycount))
+  body_count = nbwounds/(ceiling(lifepoints/damage))
+  return(floor(body_count))
 }
 
 get_kill_count(40,1,3)

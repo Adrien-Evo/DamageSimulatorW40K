@@ -2,7 +2,7 @@
 % Please edit documentation in R/stats_calculator.R
 \name{get_prob_save}
 \alias{get_prob_save}
-\title{Get the probability for a wound to go througth knowing the save of the opponent}
+\title{Get the probability for a wound to go through knowing the save of the opponent}
 \usage{
 get_prob_save(armorsave)
 }
@@ -13,7 +13,7 @@ get_prob_save(armorsave)
 Probability for a wound to go through knowing the target armor save
 }
 \description{
-Get the probability for a wound to go througth knowing the save of the opponent
+Get the probability for a wound to go through knowing the save of the opponent
 }
 \examples{
 get_prob_save(4)

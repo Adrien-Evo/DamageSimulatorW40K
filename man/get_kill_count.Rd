@@ -2,7 +2,7 @@
 % Please edit documentation in R/stats_calculator.R
 \name{get_kill_count}
 \alias{get_kill_count}
-\title{Get the number of dead units knowing how many wounds have been dealt, with how many damage per shots and the target's wound characteristic}
+\title{Get the number of dead units knowing how many wounds have been dealt, with how many damages per shot and the target's wound characteristic}
 \usage{
 get_kill_count(nbwounds, damage, lifepoints)
 }
@@ -17,7 +17,7 @@ get_kill_count(nbwounds, damage, lifepoints)
 Number of dead model
 }
 \description{
-Get the number of dead units knowing how many wounds have been dealt, with how many damage per shots and the target's wound characteristic
+Get the number of dead units knowing how many wounds have been dealt, with how many damages per shot and the target's wound characteristic
 }
 \examples{
 get_prob_save(4)
