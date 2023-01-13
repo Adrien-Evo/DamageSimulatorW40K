@@ -24,7 +24,9 @@ app_ui <- function(request) {
                # Copy the line below to make a slider bar
                sliderInput("NumberHits", label = h3("Number of hits"), min = 1,
                            max = 60, value = 10)
-        ),
+        )
+      ),
+      fluidRow(
         column(3,
                # Copy the line below to make a slider bar
                sliderInput("WS", label = h3("WS or BS "), min = 1,
