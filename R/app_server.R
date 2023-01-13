@@ -76,4 +76,28 @@ app_server <- function(input, output, session) {
     text(cumulativ_damage_barplot, binom_cumulativ[1:hits] + 0.025 , paste(round(binom_cumulativ[1:hits]*100),"%", sep=""),cex=1)
 
   })
+
+  output$cumulativ_kill_dens <- renderPlot({
+    # generate bins based on input$bins from ui.R
+    # generate bins based on input$bins from ui.R
+    hits <- input$NumberHits
+    prob_hit <- get_prob_hit(input$WS)
+    prob_wound <- get_prob_wound(input$Strength,input$TargetToughness)
+    prob_go_through_save <- get_prob_save(input$TargetSave)
+    #Combine all prob using get_prob_save
+    prob_binom <- get_binom_prob(prob_hit,prob_wound,prob_go_through_save)
+    # get the initial kill count from which the dbinom will be computed
+    nb_kills <- get_kill_count(hits, input$Damage, input$TargetLifePoints)
+
+    #Get the prob to kill a model
+    binom_kill <- dbinom(seq(1,nb_kills),nb_kills,prob=prob_binom)
+
+    binom_cumulativ = rep(0,length(binom_kill))
+    for(i in 1:length(binom_kill)){
+      binom_cumulativ[i] <- sum(binom_kill[i:length(binom_kill)])
+    }
+    # draw the histogram with the specified number of bins
+    cumulativ_kill_barplot <- barplot(binom_cumulativ,names.arg = seq(1,nb_kills),col="#69b3a2",ylim = c(0,max(binom_cumulativ)+0.05))
+    text(cumulativ_kill_barplot, binom_cumulativ + 0.025 , paste(round(binom_cumulativ*100),"%", sep=""),cex=1)
+  })
 }
