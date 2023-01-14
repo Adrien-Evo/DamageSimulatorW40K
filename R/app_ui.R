@@ -28,6 +28,19 @@ app_ui <- function(request) {
       ),
       fluidRow(
         column(3,
+               checkboxGroupInput("auto_wound",h4("Hit modifiers"),
+                                  choices = list("+1 to hit" = 1,
+                                                 "-1 to hit" = 2,
+                                                 "Reroll 1's" = 3,
+                                                 "Full rerolls" = 4,
+                                                 "1 extra hit on sixes" = 5,
+                                                 "2 extra hits on sixes" = 6,
+                                                 "Auto wound on sixes" = 7)
+              )
+        )
+      ),
+      fluidRow(
+        column(3,
                # Copy the line below to make a slider bar
                sliderInput("WS", label = h3("WS or BS "), min = 1,
                            max = 6, value = 3)

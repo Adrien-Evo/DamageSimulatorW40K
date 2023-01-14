@@ -71,6 +71,7 @@ get_prob_hit <- function(hit){
   return(prob)
 }
 
+
 #' Get the probability needed to wound
 #'
 #' @param strength Weapon strength.
