@@ -71,6 +71,20 @@ get_prob_hit <- function(hit){
   return(prob)
 }
 
+#' Get the probability needed to hit with modifier without explode
+#'
+#' @param hit Ballistic skill or Weapon skill. It's a roll needed
+#' @param modif Ballistic skill or Weapon skill. It's a roll needed
+#' @param rerolls Ballistic skill or Weapon skill. It's a roll needed
+#' @return Probability to hit
+#' @examples
+#' get_prob_hit(5)
+#' get_prob_hit(2)
+get_prob_hit_modifier <- function(hit,modif,rerolls){
+  prob = 1-(hit-1 - modif)/6 + (1-(hit-1 - modif)/6)*rerolls
+  return(prob)
+}
+
 
 #' Get the probability needed to wound
 #'

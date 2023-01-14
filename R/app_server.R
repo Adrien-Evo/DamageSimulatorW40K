@@ -12,7 +12,10 @@ app_server <- function(input, output, session) {
   output$probDens <- renderPlot({
     # generate bins based on input$bins from ui.R
     hits <- input$NumberHits
+
+
     prob_hit <- get_prob_hit(input$WS)
+
     prob_wound <- get_prob_wound(input$Strength,input$TargetToughness)
     prob_go_through_save <- get_prob_save(input$TargetSave)
 

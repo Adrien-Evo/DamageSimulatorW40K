@@ -28,13 +28,17 @@ app_ui <- function(request) {
       ),
       fluidRow(
         column(3,
-               checkboxGroupInput("auto_wound",h4("Hit modifiers"),
+               checkboxGroupInput("hit_modifiers",h4("Hit modifiers"),
                                   choices = list("+1 to hit" = 1,
-                                                 "-1 to hit" = 2,
-                                                 "Reroll 1's" = 3,
-                                                 "Full rerolls" = 4,
-                                                 "1 extra hit on sixes" = 5,
-                                                 "2 extra hits on sixes" = 6,
+                                                 "-1 to hit" = -1)
+               ),
+               checkboxGroupInput("rerolls",NULL,
+                                  choices = list("Reroll 1's" = 1/6,
+                                                 "Full rerolls" = "full")
+               ),
+               checkboxGroupInput("explode",NULL,
+                                  choices = list("1 extra hit on sixes" = 1,
+                                                 "2 extra hits on sixes" = 2,
                                                  "Auto wound on sixes" = 7)
               )
         )
