@@ -8,14 +8,9 @@
 
 app_server <- function(input, output, session) {
   ##Lets get the probability to get a damage through
-
-  output$probDens <- renderPlot({
-    # generate bins based on input$bins from ui.R
+  binom_damage <- reactive({
     hits <- input$NumberHits
-
-
     prob_hit <- get_prob_hit(input$WS)
-
     prob_wound <- get_prob_wound(input$Strength,input$TargetToughness)
     prob_go_through_save <- get_prob_save(input$TargetSave)
 
@@ -26,12 +21,16 @@ app_server <- function(input, output, session) {
     prob_binom <- get_binom_prob(prob_hit,prob_wound,prob_go_through_save)
 
     # Get the prob to damage a model
-    binom_damage <- dbinom(seq(1,nb_wounds),nb_wounds,prob=prob_binom)
+    return(dbinom(seq(1,nb_wounds),nb_wounds,prob=prob_binom))
+  })
+
+  output$probDens <- renderPlot({
+    # generate bins based on input$bins from ui.R
 
 
     # draw the histogram with the specified number of bins
-    damage_barplot <- barplot(binom_damage[1:hits],names.arg = seq(1,hits),col="#69b3a2",ylim = c(0,max(binom_damage)+0.05))
-    text(damage_barplot, binom_damage[1:hits] + 0.025 , paste(round(binom_damage[1:hits]*100),"%", sep=""),cex=1)
+    damage_barplot <- barplot(binom_damage()[1:input$NumberHits],names.arg = seq(1,input$NumberHits),col="#69b3a2",ylim = c(0,max(binom_damage())+0.05))
+    text(damage_barplot, binom_damage()[1:input$NumberHits] + 0.025 , paste(round(binom_damage()[1:input$NumberHits]*100),"%", sep=""),cex=1)
 
   })
   output$kill_dens <- renderPlot({
