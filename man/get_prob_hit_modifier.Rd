@@ -20,6 +20,6 @@ Probability to hit
 Get the probability needed to hit with modifier without explode
 }
 \examples{
-get_prob_hit(5)
-get_prob_hit(2)
+get_prob_hit_modifier(5)
+get_prob_hit_modifier(2)
 }

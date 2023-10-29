@@ -20,6 +20,6 @@ Number of dead model
 Get the number of dead units knowing how many wounds have been dealt, with how many damages per shot and the target's wound characteristic
 }
 \examples{
-get_prob_save(4)
-get_prob_save(2)
+get_kill_count(4)
+get_kill_count(2)
 }

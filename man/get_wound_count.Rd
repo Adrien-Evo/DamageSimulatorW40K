@@ -18,6 +18,6 @@ Number of dead model
 Get the number of wounds possible using the damages per shot.
 }
 \examples{
-get_prob_save(4)
-get_prob_save(2)
+get_wound_count(4)
+get_wound_count(2)
 }

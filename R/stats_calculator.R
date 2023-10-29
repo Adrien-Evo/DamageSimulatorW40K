@@ -12,10 +12,6 @@ library(shinythemes)
 ##Reading XML
 #library(XML)
 
-#necron <- xmlParse("W40K/Necrons.cat")
-#xml_necron <- xmlToList(necron)
-
-
 
 
 #' Get the roll needed to wound
@@ -78,8 +74,8 @@ get_prob_hit <- function(hit){
 #' @param rerolls Ballistic skill or Weapon skill. It's a roll needed
 #' @return Probability to hit
 #' @examples
-#' get_prob_hit(5)
-#' get_prob_hit(2)
+#' get_prob_hit_modifier(5)
+#' get_prob_hit_modifier(2)
 get_prob_hit_modifier <- function(hit,modif,rerolls){
   prob = 1-(hit-1 - modif)/6 + (1-(hit-1 - modif)/6)*rerolls
   return(prob)
@@ -116,8 +112,8 @@ get_prob_save <- function(armorsave){
 #' @param damage Damage profile of the weapon
 #' @return Number of dead model
 #' @examples
-#' get_prob_save(4)
-#' get_prob_save(2)
+#' get_wound_count(4)
+#' get_wound_count(2)
 get_wound_count <- function(nbwounds, damage){
   wound_count = nbwounds*damage
   return(wound_count)
@@ -130,8 +126,8 @@ get_wound_count <- function(nbwounds, damage){
 #' @param lifepoints Total wounds of the model
 #' @return Number of dead model
 #' @examples
-#' get_prob_save(4)
-#' get_prob_save(2)
+#' get_kill_count(4)
+#' get_kill_count(2)
 get_kill_count <- function(nbwounds, damage, lifepoints){
   body_count = nbwounds/(ceiling(lifepoints/damage))
   return(floor(body_count))
@@ -152,18 +148,18 @@ nb_wounds <- get_wound_count(hits,1)
 prob_binom <- get_binom_prob(prob_hit,prob_wound,prob_go_through_save)
 
 # Get the prob to damage a model
-binom_damage <- dbinom(seq(1,nb_wounds),nb_wounds,prob=prob_binom)
+binom_damage <- dbinom(seq(0,nb_wounds),nb_wounds,prob=prob_binom)
 
 
 # draw the histogram with the specified number of bins
-damage_barplot <- barplot(binom_damage[1:hits],names.arg = seq(1,hits),col="#69b3a2",ylim = c(0,max(binom_damage)+0.05))
-text(damage_barplot, binom_damage[1:hits] + 0.025 , paste(round(binom_damage[1:hits]*100),"%", sep=""),cex=1)
+damage_barplot <- barplot(binom_damage,names.arg = seq(0,hits),col="#69b3a2",ylim = c(0,max(binom_damage)+0.05))
+text(damage_barplot, binom_damage + 0.025 , paste(round(binom_damage*100),"%", sep=""),cex=1)
 
 binom_cumulativ = rep(0,length(binom_damage))
 for(i in 1:length(binom_damage)){
   binom_cumulativ[i] <- sum(binom_damage[i:length(binom_damage)])
 }
 
-cumulativ_damage_barplot <- barplot(binom_cumulativ[1:hits],names.arg = seq(1,hits),col="#69b3a2",ylim = c(0,max(binom_cumulativ)+0.05))
-text(cumulativ_damage_barplot, binom_cumulativ[1:hits] + 0.025 , paste(round(binom_cumulativ[1:hits]*100),"%", sep=""),cex=1)
+cumulativ_damage_barplot <- barplot(binom_cumulativ,names.arg = seq(0,hits),col="#69b3a2",ylim = c(0,max(binom_cumulativ)+0.05))
+text(cumulativ_damage_barplot, binom_cumulativ + 0.025 , paste(round(binom_cumulativ*100),"%", sep=""),cex=1)
 

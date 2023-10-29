@@ -21,7 +21,7 @@ app_server <- function(input, output, session) {
     prob_binom <- get_binom_prob(prob_hit,prob_wound,prob_go_through_save)
 
     # Get the prob to damage a model
-    return(dbinom(seq(1,nb_wounds),nb_wounds,prob=prob_binom))
+    return(dbinom(seq(0,nb_wounds),nb_wounds,prob=prob_binom))
   })
 
   output$probDens <- renderPlot({
@@ -29,8 +29,8 @@ app_server <- function(input, output, session) {
 
 
     # draw the histogram with the specified number of bins
-    damage_barplot <- barplot(binom_damage()[1:input$NumberHits],names.arg = seq(1,input$NumberHits),col="#69b3a2",ylim = c(0,max(binom_damage())+0.05))
-    text(damage_barplot, binom_damage()[1:input$NumberHits] + 0.025 , paste(round(binom_damage()[1:input$NumberHits]*100),"%", sep=""),cex=1)
+    damage_barplot <- barplot(binom_damage(),names.arg = seq(0,input$NumberHits),col="#69b3a2",ylim = c(0,max(binom_damage())+0.05))
+    text(damage_barplot, binom_damage() + 0.025 , paste(round(binom_damage()*100),"%", sep=""),cex=1)
 
   })
   output$kill_dens <- renderPlot({
@@ -46,10 +46,10 @@ app_server <- function(input, output, session) {
     nb_kills <- get_kill_count(hits, input$Damage, input$TargetLifePoints)
 
     #Get the prob to kill a model
-    binom_kill <- dbinom(seq(1,nb_kills),nb_kills,prob=prob_binom)
+    binom_kill <- dbinom(seq(0,nb_kills),nb_kills,prob=prob_binom)
 
     # draw the histogram with the specified number of bins
-    kill_barplot <- barplot(binom_kill,names.arg = seq(1,nb_kills),col="#69b3a2",ylim = c(0,max(binom_kill)+0.05))
+    kill_barplot <- barplot(binom_kill,names.arg = seq(0,nb_kills),col="#69b3a2",ylim = c(0,max(binom_kill)+0.05))
     text(kill_barplot, binom_kill + 0.025 , paste(round(binom_kill*100),"%", sep=""),cex=1)
   })
 
@@ -74,8 +74,8 @@ app_server <- function(input, output, session) {
       binom_cumulativ[i] <- sum(binom_damage[i:length(binom_damage)])
     }
     # draw the histogram with the probability to do at least X damage
-    cumulativ_damage_barplot <- barplot(binom_cumulativ[1:hits],names.arg = seq(1,hits),col="#69b3a2",ylim = c(0,max(binom_cumulativ)+0.05))
-    text(cumulativ_damage_barplot, binom_cumulativ[1:hits] + 0.025 , paste(round(binom_cumulativ[1:hits]*100),"%", sep=""),cex=1)
+    cumulativ_damage_barplot <- barplot(binom_cumulativ,names.arg = seq(1,hits),col="#69b3a2",ylim = c(0,max(binom_cumulativ)+0.05))
+    text(cumulativ_damage_barplot, binom_cumulativ + 0.025 , paste(round(binom_cumulativ*100),"%", sep=""),cex=1)
 
   })
 
