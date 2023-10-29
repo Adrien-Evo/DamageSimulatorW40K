@@ -54,21 +54,12 @@ app_server <- function(input, output, session) {
   })
 
   output$cumulativ_probDens <- renderPlot({
-    # generate bins based on input$bins from ui.R
-    hits <- input$NumberHits
-    prob_hit <- get_prob_hit(input$WS)
-    prob_wound <- get_prob_wound(input$Strength,input$TargetToughness)
-    prob_go_through_save <- get_prob_save(input$TargetSave)
 
-    #Get the initial number of damage using the damage characteristic of the weapon
-    nb_wounds <- get_wound_count(hits,input$Damage)
 
-    #Combine all prob using get_prob_save
-    prob_binom <- get_binom_prob(prob_hit,prob_wound,prob_go_through_save)
-
-    # Get the prob to damage a model
-    binom_damage <- dbinom(seq(1,nb_wounds),nb_wounds,prob=prob_binom)
-
+    #Using the reactive function to get binom_damage
+    binom_damage <- binom_damage()
+    #Removing the prob value for damage 0 since it won't be need for the cumulative representation.
+    binom_damage <- binom_damage[-1]
     binom_cumulativ = rep(0,length(binom_damage))
     for(i in 1:length(binom_damage)){
       binom_cumulativ[i] <- sum(binom_damage[i:length(binom_damage)])
