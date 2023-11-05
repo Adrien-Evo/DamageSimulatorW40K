@@ -47,4 +47,6 @@ shiny module. Like weapon profile as its own UI for example./ I dont
 knoqw Do the graph now for the kill count Get summary stats displayed
 somewhere to have an easy to compare value tlo start implementing global
 testing on the final output Add testing for all small functions to start
-working on adding hit modifier
+working on adding hit modifier Check this for the”mes and navbar for
+different options:
+<https://shiny.posit.co/r/gallery/application-layout/shiny-theme-selector/>

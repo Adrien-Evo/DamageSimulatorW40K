@@ -44,5 +44,6 @@ Maybe put stat calculator as its own shiny module. Like weapon profile as its ow
 Do the graph now for the kill count
 Get summary stats displayed somewhere to have an easy to compare value tlo start implementing global testing on the final output
 Add testing for all small functions to start working on adding hit modifier
-
+Check this for the"mes and navbar for different options:
+https://shiny.posit.co/r/gallery/application-layout/shiny-theme-selector/
 

@@ -26,22 +26,26 @@ app_ui <- function(request) {
                            max = 60, value = 10)
         )
       ),
+      br(),
+
       fluidRow(
         column(3,
-               checkboxGroupInput("hit_modifiers",h4("Hit modifiers"),
-                                  choices = list("+1 to hit" = 1,
-                                                 "-1 to hit" = -1)
-               ),
-               checkboxGroupInput("rerolls",NULL,
-                                  choices = list("Reroll 1's" = 1/6,
+               wellPanel(
+                 h3("Hit Modifyer"),
+
+               radioButtons("hitBonus", label = h5("Bonus to hit"),
+                            choices = list("+1 to hit" = 1,
+                                           "-1 to hit" = -1)
+                            ),
+                radioButtons("rerolls",label = h5("Rerolls"),
+                                  choices = list("Reroll 1's" = 1,
                                                  "Full rerolls" = "full")
                ),
-               checkboxGroupInput("explode",NULL,
-                                  choices = list("1 extra hit on sixes" = 1,
-                                                 "2 extra hits on sixes" = 2,
-                                                 "Auto wound on sixes" = 7)
-              )
-        )
+               numericInput("sustained",label = h5("Sustained Hit X"),
+                            value = 0),
+               checkboxInput("lethal", label = "Lethal Hits", value = TRUE),
+
+              ))
       ),
       fluidRow(
         column(3,
