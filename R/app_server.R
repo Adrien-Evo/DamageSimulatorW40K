@@ -8,7 +8,7 @@
 
 app_server <- function(input, output, session) {
   ##Lets get the probability to get a damage through
-  binom_damage <- reactive({
+  binom_prob <- reactive({
     hits <- input$NumberHits
     prob_hit <- get_prob_hit(input$WS)
     prob_wound <- get_prob_wound(input$Strength,input$TargetToughness)
@@ -21,43 +21,31 @@ app_server <- function(input, output, session) {
     prob_binom <- get_binom_prob(prob_hit,prob_wound,prob_go_through_save)
 
     # Get the prob to damage a model
-    return(dbinom(seq(0,nb_wounds),nb_wounds,prob=prob_binom))
+    return(prob_binom)
   })
 
   output$probDens <- renderPlot({
-    # generate bins based on input$bins from ui.R
+    #Get the initial number of damage using the damage characteristic of the weapon
+    nb_wounds <- get_wound_count(input$NumberHits,input$Damage)
 
-
-    # draw the histogram with the specified number of bins
-    damage_barplot <- barplot(binom_damage(),names.arg = seq(0,get_wound_count(input$NumberHits,input$Damage)),col="#69b3a2",ylim = c(0,max(binom_damage())+0.05))
-    text(damage_barplot, binom_damage() + 0.025 , paste(round(binom_damage()*100),"%", sep=""),cex=1)
-
-  })
-  output$kill_dens <- renderPlot({
-    # generate bins based on input$bins from ui.R
-    # generate bins based on input$bins from ui.R
-    hits <- input$NumberHits
-    prob_hit <- get_prob_hit(input$WS)
-    prob_wound <- get_prob_wound(input$Strength,input$TargetToughness)
-    prob_go_through_save <- get_prob_save(input$TargetSave)
-    #Combine all prob using get_prob_save
-    prob_binom <- get_binom_prob(prob_hit,prob_wound,prob_go_through_save)
-    # get the initial kill count from which the dbinom will be computed
-    nb_kills <- get_kill_count(hits, input$Damage, input$TargetLifePoints)
-
-    #Get the prob to kill a model
-    binom_kill <- dbinom(seq(0,nb_kills),nb_kills,prob=prob_binom)
+    #Get the binomial probability associated with wounds
+    binom_damage = dbinom(seq(0,nb_wounds),nb_wounds,prob=binom_prob())
 
     # draw the histogram with the specified number of bins
-    kill_barplot <- barplot(binom_kill,names.arg = seq(0,nb_kills),col="#69b3a2",ylim = c(0,max(binom_kill)+0.05))
-    text(kill_barplot, binom_kill + 0.025 , paste(round(binom_kill*100),"%", sep=""),cex=1)
-  })
+    damage_barplot <- barplot(binom_damage,names.arg = seq(0,get_wound_count(input$NumberHits,input$Damage)),col="#69b3a2",ylim = c(0,max(binom_damage)+0.05))
+    text(damage_barplot, binom_damage + 0.025 , paste(round(binom_damage*100),"%", sep=""),cex=1)
 
+  })
+  #Cumulativ Damage plot
   output$cumulativ_probDens <- renderPlot({
 
 
-    #Using the reactive function to get binom_damage
-    binom_damage <- binom_damage()
+    #Get the initial number of damage using the damage characteristic of the weapon
+    nb_wounds <- get_wound_count(input$NumberHits,input$Damage)
+
+    #Get the binomial probability associated with wounds
+    binom_damage = dbinom(seq(0,nb_wounds),nb_wounds,prob=binom_prob())
+
     #Removing the prob value for damage 0 since it won't be need for the cumulative representation.
     binom_damage <- binom_damage[-1]
     binom_cumulativ = rep(0,length(binom_damage))
@@ -69,16 +57,27 @@ app_server <- function(input, output, session) {
     text(cumulativ_damage_barplot, binom_cumulativ + 0.025 , paste(round(binom_cumulativ*100),"%", sep=""),cex=1)
 
   })
+  output$kill_dens <- renderPlot({
+
+    #Get the binom prob
+    prob_binom <- binom_prob()
+    # get the initial kill count from which the dbinom will be computed
+    nb_kills <- get_kill_count(hits, input$Damage, input$TargetLifePoints)
+
+    #Get the prob to kill a model
+    binom_kill <- dbinom(seq(0,nb_kills),nb_kills,prob=prob_binom)
+
+    # draw the histogram with the specified number of bins
+    kill_barplot <- barplot(binom_kill,names.arg = seq(0,nb_kills),col="#69b3a2",ylim = c(0,max(binom_kill)+0.05))
+    text(kill_barplot, binom_kill + 0.025 , paste(round(binom_kill*100),"%", sep=""),cex=1)
+  })
+
+
 
   output$cumulativ_kill_dens <- renderPlot({
-    # generate bins based on input$bins from ui.R
-    # generate bins based on input$bins from ui.R
-    hits <- input$NumberHits
-    prob_hit <- get_prob_hit(input$WS)
-    prob_wound <- get_prob_wound(input$Strength,input$TargetToughness)
-    prob_go_through_save <- get_prob_save(input$TargetSave)
-    #Combine all prob using get_prob_save
-    prob_binom <- get_binom_prob(prob_hit,prob_wound,prob_go_through_save)
+
+    #Get the binom prob
+    prob_binom <- binom_prob()
     # get the initial kill count from which the dbinom will be computed
     nb_kills <- get_kill_count(hits, input$Damage, input$TargetLifePoints)
 
