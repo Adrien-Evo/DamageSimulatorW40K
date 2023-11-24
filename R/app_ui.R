@@ -29,23 +29,34 @@ app_ui <- function(request) {
       br(),
 
       fluidRow(
-        column(3,
+        column(4,
                wellPanel(
                  h3("Hit Modifyer"),
 
-               radioButtons("hitBonus", label = h5("Bonus to hit"),
-                            choices = list("+1 to hit" = 1,
-                                           "-1 to hit" = -1)
-                            ),
-                radioButtons("rerolls",label = h5("Rerolls"),
-                                  choices = list("Reroll 1's" = 1,
-                                                 "Full rerolls" = "full")
+                 checkboxGroupInput("hitBonus", label = h5("Bonus to hit"),
+                            choices = c("+1 to hit"= 1,
+                                        "-1 to hit"= -1,
+                                        "Reroll 1's" = "rerollOne",
+                                        "Full rerolls" = "rerollFul",
+                                        "Lethal Hits" = "lethal")
                ),
                numericInput("sustained",label = h5("Sustained Hit X"),
-                            value = 0),
-               checkboxInput("lethal", label = "Lethal Hits", value = TRUE),
+                            value = 0)
 
-              ))
+              )),
+        column(4,
+               wellPanel(
+                 h3("Wound Modifyer"),
+
+                 checkboxGroupInput("woundBonus", label = h5("Bonus to wound"),
+                              choices = list("+1 to wound" = 1,
+                                             "-1 to wound" = -1,
+                                             "Reroll 1's" = "rerollOne",
+                                             "Twin-Linked" = "rerollFull",
+                                             "Devastating wounds"="devastating")
+                 )
+               )
+        )
       ),
       fluidRow(
         column(3,
